@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Text to Speech Converter</title>
+    <link rel="icon" href="C:\Users\HP\OneDrive\Desktop\new\New folder\icons8-butterfly-48.png" type="">
+    <style>
+        body {
+            background-image: linear-gradient(135deg, #FFDFD6, #E3A5C7);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+        }
+
+        .greeting {
+            
+            font-weight: 400;
+            margin-top: 20px;
+            font-size: 2rem;
+        }
+       
+        .all {
+            background-image: linear-gradient(315deg, #FFDFD6, #FFDFD6, #E3A5C7, #E3A5C7);
+            padding: 10px;
+            width: 95%;
+            max-width: 800px;
+            margin: 10px auto;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .heee {
+            padding: 8px;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            animation: rotate 2s infinite, change-color 2s infinite;
+        }
+
+        @keyframes change-color {
+            0%, 100% {
+                background-image: linear-gradient(315deg, #694F8E, #000, #694F8E, #000, #694F8E, #000);
+            }
+            20%, 80% {
+                background-image: linear-gradient(315deg, #000000, #B692C2, #000000, #B692C2, #000000, #B692C2);
+            }
+            40%, 60% {
+                background-image: linear-gradient(315deg, #694F8E, #000, #694F8E, #000, #694F8E, #000);
+            }
+        }
+
+        .conv {
+           
+            color: rgb(0, 0, 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            display: inline-block;
+            background-image: linear-gradient(315deg, #CFB1FC, #756BFF);
+            color: #fff;
+            margin: 20px 0;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-image 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .button:hover {
+            background-image: linear-gradient(315deg, #756BFF, #CFB1FC);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #voice-select {
+            padding: 10px;
+            opacity: 0.8;
+            border-radius: 10px;
+            font-family: "convergence", sans-serif;
+            border: 2px solid black;
+            width: 100%;
+            max-width: 200px;
+            margin: 10px 0;
+            opacity: 0.4;
+        }
+
+        option {
+            font-family: "convergence", sans-serif;
+            border: 1px solid black;
+            color: black;
+            background-color: #B692C2;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .me {
+            margin: 20px 0;
+            border: 1px solid black;
+            opacity: 0.8;
+            width: 100%;
+        }
+
+        #text-to-speak {
+            border: 1px solid black;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            resize: vertical;
+            opacity: 0.6;
+            color: #000;
+        }
+
+        #text-to-speak:focus {
+            border: 2px solid pink;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .button {
+                width: 100%;
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            #voice-select {
+                width: 100%;
+                max-width: none;
+                padding: 10px;
+            }
+
+            #text-to-speak {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .all {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+
+            .button {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            #voice-select {
+                font-size: 16px;
+                padding: 8px;
+            }
+
+            #text-to-speak {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heee">
+        <div class="all">
+            <button class="button" onclick="askName()">Enter your name</button>
+            <div id="greeting" class="greeting"></div>
+            <div class="conv">
+                <h1>Converting text to speech</h1>
+                <div class="me">
+                    <form>
+                        <textarea id="text-to-speak" rows="16" placeholder="Write something..." aria-label="Text to speak"></textarea>
+                    </form>
+                </div>
+                <div class="row">
+                    <label for="voice-select"><b>Voice:</b></label>
+                    <select id="voice-select" aria-label="Select voice">
+                        <option value="" style="padding-left: 5px;">Select voice</option>
+                    </select>
+                </div>
+                <div class="click">
+                    <div class="button" role="button" onclick="speakText()">
+                        Listen
+                    </div>
+                </div>
+            </div>
+            <div id="loading" style="display: none;">Loading voices...</div>
+        </div>
+    </div>
+    <script>
+        // Function to ask the user for their name
+        function askName() {
+            var name = prompt("Please enter your name:");
+            if (name) {
+                document.getElementById("greeting").innerHTML = "Hello, " + name + "!";
+            } else {
+                document.getElementById("greeting").innerHTML = "Hello, Guest!";
+            }
+        }
+
+        const voiceSelect = document.getElementById("voice-select");
+
+        // Get the list of available voices
+        speechSynthesis.onvoiceschanged = () => {
+            document.getElementById('loading').style.display = 'none';
+            const voices = speechSynthesis.getVoices();
+            voices.forEach((voice) => {
+                const option = document.createElement("option");
+                option.value = voice.name;
+                option.textContent = voice.name;
+                voiceSelect.appendChild(option);
+            });
+        };
+
+        // Display loading message until voices are loaded
+        document.getElementById('loading').style.display = 'block';
+
+        function speakText() {
+            const text = document.getElementById("text-to-speak").value;
+            const selectedVoice = voiceSelect.value;
+            if (!text) {
+                alert("Please enter some text to speak.");
+                return;
+            }
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "en-US";
+
+            // Set the selected voice
+            const voices = speechSynthesis.getVoices();
+            speech.voice = voices.find((voice) => voice.name === selectedVoice);
+
+            // Check if the selected voice is found
+            if (!speech.voice) {
+                alert("Selected voice not found.");
+                return;
+            }
+
+            speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>
+``
